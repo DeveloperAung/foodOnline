@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 
 from vendor.forms import VendorForm
+from vendor.models import Vendor
 from .forms import UserForm
 from .models import User, UserProfile
 from django.contrib import messages, auth
@@ -179,7 +180,17 @@ def cusDashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
-    return render(request, 'accounts/vendorDashboard.html')
+    vendor = Vendor.objects.get(user=request.user)
+    
+    context = {
+        'vendor': vendor,
+        # 'orders': orders,
+        # 'orders_count': orders.count(),
+        # 'recent_orders': recent_orders,
+        # 'total_revenue': total_revenue,
+        # 'current_month_revenue': current_month_revenue,
+    }
+    return render(request, 'accounts/vendorDashboard.html', context)
 
 
 def forgot_password(request):
