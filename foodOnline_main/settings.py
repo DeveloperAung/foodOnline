@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 from decouple import config
 
@@ -42,7 +43,8 @@ INSTALLED_APPS = [
     'accounts',
     'vendor',
     'menu',
-    'marketplace'
+    'marketplace',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +87,8 @@ WSGI_APPLICATION = 'foodOnline_main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': config('DB_NAME'),  # 'foodOnline_db',  BASE_DIR / 'db.sqlite3',
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
@@ -160,3 +163,8 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 DEFAULT_FROM_EMAIL = 'foodOnline Marketplace <django.buyerone000@gmail.com>'
 
 GOOGLE_API_KEY = 'AIzaSyALCkO2rPbmOvZZ4Rt_rFg6ygskFyTnDkE'
+
+
+os.environ['PATH'] = os.path.join(BASE_DIR, 'env\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
+os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'env\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
+GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'env\Lib\site-packages\osgeo\gdal304.dll')
