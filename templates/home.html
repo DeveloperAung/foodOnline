@@ -86,11 +86,13 @@
 							{% for vendor in vendors %}
 							<li class="has-border">
 								<figure>
+									<a href="{% url 'vendor_detail' vendor.vendor_slug %}">
 									{% if vendor.user_profile.profile_picture %}
-									<a href="#"><img src="{{ vendor.user_profile.profile_picture.url }}" class="attachment-full size-full wp-post-image" alt=""></a>
+									<img src="{{ vendor.user_profile.profile_picture.url }}" class="attachment-full size-full wp-post-image" alt="">
 									{% else %}
-									<a href="#"><img src="{% static 'assets/images/default-profile.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
+									<img src="{% static 'assets/images/default-profile.png' %}" class="attachment-full size-full wp-post-image" alt="">
 									{% endif %}
+									</a>
 								</figure>
 							</li>
 							{% endfor %}
