@@ -5,6 +5,7 @@ from django.http.response import HttpResponse
 
 from vendor.forms import VendorForm
 from vendor.models import Vendor
+from orders.models import Order
 from .forms import UserForm
 from .models import User, UserProfile
 from django.contrib import messages, auth
@@ -175,7 +176,14 @@ def myAccount(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def cusDashboard(request):
-    return render(request, 'accounts/cusDashboard.html')
+    orders = Order.objects.filter(user=request.user, is_ordered=True)
+    recent_orders = orders[:5]
+    context = {
+        'orders': orders,
+        'orders_count': orders.count(),
+        'recent_orders': recent_orders,
+    }
+    return render(request, 'accounts/cusDashboard.html', context)
 
 
 @login_required(login_url='login')
