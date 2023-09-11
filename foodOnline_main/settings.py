@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'menu',
     'marketplace',
     'customers',
+    'orders',
 
     'django.contrib.gis',
 ]
@@ -74,7 +75,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_vendor',
                 'accounts.context_processors.get_user_profile',
-                'accounts.context_processors.get_google_api',                
+                'accounts.context_processors.get_google_api', 
+                'accounts.context_processors.get_paypal_client_id',                
                 'marketplace.context_processors.get_cart_counter',
                 'marketplace.context_processors.get_cart_amounts',
                 
@@ -166,9 +168,13 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 DEFAULT_FROM_EMAIL = 'foodOnline Marketplace <django.buyerone000@gmail.com>'
 
-GOOGLE_API_KEY = 'AIzaSyALCkO2rPbmOvZZ4Rt_rFg6ygskFyTnDkE'
+GOOGLE_API_KEY = config('GOOGLE_API_KEY')
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 
+# IF POPUP BOX FOR PAYPAL IS BLANK NEED TI USE THE BELOW CODE
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 os.environ['PATH'] = os.path.join(BASE_DIR, 'env\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
 os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'env\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
 GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'env\Lib\site-packages\osgeo\gdal304.dll')
+
