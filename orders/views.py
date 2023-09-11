@@ -16,11 +16,10 @@ from django.contrib.auth.decorators import login_required
 # import razorpay
 # from foodOnline_main.settings import RZP_KEY_ID, RZP_KEY_SECRET
 from django.contrib.sites.shortcuts import get_current_site
-
+from .utils import order_total_by_vendor
 
 
 # client = razorpay.Client(auth=(RZP_KEY_ID, RZP_KEY_SECRET))
-
 
 
 @login_required(login_url='login')
@@ -59,10 +58,7 @@ def place_order(request):
             tax_amount = round((tax_percentage * subtotal)/100, 2)
             tax_dict.update({tax_type: {str(tax_percentage) : str(tax_amount)}})
         # Construct total data
-        total_data.update({fooditem.vendor.id: {str(subtotal): str(tax_dict)}})
-    
-
-        
+        total_data.update({fooditem.vendor.id: {str(subtotal): str(tax_dict)}})        
 
     subtotal = get_cart_amounts(request)['subtotal']
     total_tax = get_cart_amounts(request)['tax']
@@ -195,9 +191,9 @@ def payments(request):
                     'order': order,
                     'to_email': i.fooditem.vendor.user.email,
                     'ordered_food_to_vendor': ordered_food_to_vendor,
-                    # 'vendor_subtotal': order_total_by_vendor(order, i.fooditem.vendor.id)['subtotal'],
-                    # 'tax_data': order_total_by_vendor(order, i.fooditem.vendor.id)['tax_dict'],
-                    # 'vendor_grand_total': order_total_by_vendor(order, i.fooditem.vendor.id)['grand_total'],
+                    'vendor_subtotal': order_total_by_vendor(order, i.fooditem.vendor.id)['subtotal'],
+                    'tax_data': order_total_by_vendor(order, i.fooditem.vendor.id)['tax_dict'],
+                    'vendor_grand_total': order_total_by_vendor(order, i.fooditem.vendor.id)['grand_total'],
                 }
                 send_notification(mail_subject, mail_template, context)
 
